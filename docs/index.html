@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>KeySpace</title>
+<link rel="icon" href="icon.png" type="image/png">
 <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -42,8 +43,204 @@
 <button class="next">&#10095;</button>
 
 </div>
+<section class="properties">
+    
 
+ <div class="top-bar">
 
+    <div class="left-controls">
+        <div class="currency-switcher">
+            <span class="currency-label">Валюта:</span>
+            <button class="currency-btn active" data-currency="usd">$ Долари</button>
+            <button class="currency-btn" data-currency="uah">₴ Гривні</button>
+        </div>
+
+        <div class="deal-switcher">
+            <span class="deal-label">Тип:</span>
+            <button class="deal-btn active" data-deal="">Усі</button>
+            <button class="deal-btn" data-deal="Купівля">Купівля</button>
+            <button class="deal-btn" data-deal="Оренда">Оренда</button>
+        </div>
+    </div>
+
+    <div class="sort-box">
+        <span class="sort-label">Сортувати:</span>
+        <select id="sortFilter">
+            <option value="">За замовчуванням</option>
+            <option value="cheap">Найдешевші</option>
+            <option value="expensive">Найдорожчі</option>
+        </select>
+    </div>
+
+</div>
+<div class="filter-box">
+    <select id="typeFilter">
+        <option value="">Тип нерухомості</option>
+        <option value="Квартира">Квартира</option>
+        <option value="Будинок">Будинок</option>
+    </select>
+
+    <select id="cityFilter">
+        <option value="">Місто</option>
+        <option value="Київ">Київ</option>
+        <option value="Львів">Львів</option>
+        <option value="Одеса">Одеса</option>
+        <option value="Київська область">Київська область</option>
+    </select>
+
+    <select id="roomsFilter">
+        <option value="">Кімнати</option>
+        <option value="1">1 кімната</option>
+        <option value="2">2 кімнати</option>
+        <option value="3">3 кімнати</option>
+        <option value="4">4+ кімнати</option>
+    </select>
+
+    <input type="number" id="areaFrom" placeholder="Площа від (м²)">
+    <input type="number" id="areaTo" placeholder="Площа до (м²)">
+
+    <input type="number" id="priceFrom" placeholder="Ціна від">
+    <input type="number" id="priceTo" placeholder="Ціна до">
+
+    
+    <button id="resetBtn" class="reset-btn">Скинути</button>
+</div>
+
+    <div class="properties-grid">
+    <div id="noResults" class="no-results" style="display:none;">
+    <div class="no-results-inner">
+        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" class="no-icon" alt="Нічого не знайдено">
+        <h3>Нічого не знайдено</h3>
+        <p>Схоже, за такими параметрами оголошень поки немає.</p>
+    </div>
+</div>
+    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="2" data-area="68" data-price-usd="82000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Квартира в Києві">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Сучасна квартира в Києві</h3>
+            <p class="property-location">Київ, Печерський район</p>
+            <p class="property-details">2 кімнати • 68 м²</p>
+            <div class="property-bottom">
+                <span class="price">$82 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Будинок" data-city="Львів" data-rooms="4" data-area="145" data-price-usd="145000" data-deal="Купівля">
+        <img src="https://manhattan-up.com.ua/wp-content/uploads/2023/10/yak-vyglyadaye-kvartyra-studiya-1.jpg.webp" alt="Будинок у Львові">
+        <div class="property-info">
+            <span class="property-type">Будинок</span>
+            <h3>Затишний будинок у Львові</h3>
+            <p class="property-location">Львів, Сихівський район</p>
+            <p class="property-details">4 кімнати • 145 м²</p>
+            <div class="property-bottom">
+                <span class="price">$145 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="3" data-area="82" data-price-usd="96000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688" alt="Квартира в Одесі">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Світла квартира біля моря</h3>
+            <p class="property-location">Одеса, Приморський район</p>
+            <p class="property-details">3 кімнати • 82 м²</p>
+            <div class="property-bottom">
+                <span class="price">$96 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="2" data-area="61" data-price-usd="74000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858" alt="Квартира у Львові">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Квартира з великими вікнами</h3>
+            <p class="property-location">Львів, Франківський район</p>
+            <p class="property-details">2 кімнати • 61 м²</p>
+            <div class="property-bottom">
+                <span class="price">$74 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Будинок" data-city="Київська область" data-rooms="5" data-area="180" data-price-usd="210000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" alt="Будинок у Києві">
+        <div class="property-info">
+            <span class="property-type">Будинок</span>
+            <h3>Просторий будинок для сім’ї</h3>
+            <p class="property-location">Київська область</p>
+            <p class="property-details">5 кімнат • 180 м²</p>
+            <div class="property-bottom">
+                <span class="price">$210 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="1" data-area="42" data-price-usd="58000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1494526585095-c41746248156" alt="Квартира в Одесі">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Компактна квартира в центрі</h3>
+            <p class="property-location">Одеса, Центр</p>
+            <p class="property-details">1 кімната • 42 м²</p>
+            <div class="property-bottom">
+                <span class="price">$58 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Будинок" data-city="Одеса" data-rooms="4" data-area="160" data-price-usd="172000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" alt="Будинок в Одесі">
+        <div class="property-info">
+            <span class="property-type">Будинок</span>
+            <h3>Будинок із сучасним фасадом</h3>
+            <p class="property-location">Одеса, Київський район</p>
+            <p class="property-details">4 кімнати • 160 м²</p>
+            <div class="property-bottom">
+                <span class="price">$172 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="3" data-area="89" data-price-usd="115000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85" alt="Квартира в Києві">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Квартира в новобудові</h3>
+            <p class="property-location">Київ, Дарницький район</p>
+            <p class="property-details">3 кімнати • 89 м²</p>
+            <div class="property-bottom">
+                <span class="price">$115 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="2" data-area="70" data-price-usd="79000" data-deal="Купівля">
+        <img src="https://images.unsplash.com/photo-1448630360428-65456885c650" alt="Квартира у Львові">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Стильна квартира для молодої сім’ї</h3>
+            <p class="property-location">Львів, Шевченківський район</p>
+            <p class="property-details">2 кімнати • 70 м²</p>
+            <div class="property-bottom">
+                <span class="price">$79 000</span>
+                <a href="#" class="details-btn">Детальніше</a>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
 <section class="advantages">
     <h2>Чому обирають нашу платформу</h2>
 
