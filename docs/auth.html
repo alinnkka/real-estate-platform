@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід | KeySpace</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<section class="auth-page">
+    <div class="auth-box">
+        <h2 id="authTitle">Вхід</h2>
+
+        <input type="text" id="authName" placeholder="Ваше ім’я" style="display:none">
+        <input type="file" id="authAvatar" accept="image/*" style="display:none;">
+        <input type="email" id="authEmail" placeholder="Email">
+        <input type="password" id="authPassword" placeholder="Пароль">
+
+        <button id="authBtn">Увійти</button>
+
+        <p id="switchAuth">
+            Немає акаунта? <span>Зареєструватися</span>
+        </p>
+
+        <a href="index.html" class="back-home">← Повернутися на головну</a>
+    </div>
+</section>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

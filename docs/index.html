@@ -7,7 +7,14 @@
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="stylesheet" href="css/style.css">
 </head>
-
+<div class="login-modal" id="loginModal">
+    <div class="login-modal-content">
+        <span class="login-modal-close">&times;</span>
+        <h2>Потрібно увійти</h2>
+        <p>Щоб додати оголошення в обране або створити власне оголошення, увійдіть у профіль.</p>
+        <a href="auth.html" class="login-modal-btn">Увійти або зареєструватися</a>
+    </div>
+</div>
 <body>
 
 <div class="hero">
@@ -21,16 +28,16 @@
 <nav class="menu">
 
 
-<a href="#" class="favorite-btn">
-    <img src="heart-b.png"
-         class="heart-icon"
-         onmouseover="this.src='heart-r.png'"
-         onmouseout="this.src='heart-b.png'">
+<a href="profile.html" class="favorite-btn">
+    <img src="heart-b.png" class="heart-icon">
+    <span id="favoritesCount">0</span>
 </a>
-<a href="#" class="profile-btn">
-    <img src="avatar.png" class="avatar">
-    <span>Ваш профіль</span>
+<a href="profile.html" class="profile-btn">
+    <img src="avatar.png" class="avatar" id="headerAvatar">
+    <span id="headerUserName">Ваш профіль</span>
 </a>
+
+<button id="logoutBtn" class="logout-btn" style="display:none;">Вихід</button>
 <a href="#" class="add-btn">Додати оголошення</a>
 
 </nav>
@@ -114,7 +121,7 @@
         <p>Схоже, за такими параметрами оголошень поки немає.</p>
     </div>
 </div>
-    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="2" data-area="68" data-price-usd="82000" data-deal="Купівля">
+    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="2" data-area="68" data-price-usd="82000" data-deal="Купівля" data-phone="+380671111111"  data-name="Тамара" data-role="Рієлтор" data-avatar="https://www.selc.org/wp-content/uploads/2021/07/Lauren_Fry_0819_web-1.jpg">
         <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Квартира в Києві">
         <div class="property-info">
             <span class="property-type">Квартира</span>
@@ -123,12 +130,18 @@
             <p class="property-details">2 кімнати • 68 м²</p>
             <div class="property-bottom">
                 <span class="price">$82 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
 
-    <div class="property-card" data-type="Будинок" data-city="Львів" data-rooms="4" data-area="145" data-price-usd="145000" data-deal="Купівля">
+    <div class="property-card" data-type="Будинок" data-city="Львів" data-rooms="4" data-area="145" data-price-usd="145000" data-deal="Купівля" data-phone="+380672222222" data-name="Константин" data-role="Продавець" data-avatar="https://img.tsn.ua/cached/647/tsn-68a41e04dcd5a9f31ad7b42986ffb0f3/thumbs/1200x630/db/0d/4a51dac9ce6e24c311e85f9fd0660ddb.jpeg">
         <img src="https://manhattan-up.com.ua/wp-content/uploads/2023/10/yak-vyglyadaye-kvartyra-studiya-1.jpg.webp" alt="Будинок у Львові">
         <div class="property-info">
             <span class="property-type">Будинок</span>
@@ -137,12 +150,17 @@
             <p class="property-details">4 кімнати • 145 м²</p>
             <div class="property-bottom">
                 <span class="price">$145 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+               <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
 
-    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="3" data-area="82" data-price-usd="96000" data-deal="Купівля">
+    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="3" data-area="82" data-price-usd="96000" data-deal="Купівля" data-phone="+380673333333" data-name="Вадим" data-role="Продавець" data-avatar="https://mc.today/wp-content/uploads/2024/01/Depositphotos_279466396_L-1024x684.jpg">
         <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688" alt="Квартира в Одесі">
         <div class="property-info">
             <span class="property-type">Квартира</span>
@@ -151,27 +169,54 @@
             <p class="property-details">3 кімнати • 82 м²</p>
             <div class="property-bottom">
                 <span class="price">$96 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
 
-    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="2" data-area="61" data-price-usd="74000" data-deal="Купівля">
-        <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858" alt="Квартира у Львові">
+    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="2" data-area="61" data-price-usd="430" data-deal="Оренда" data-phone="+380674444444" data-name="Марія" data-role="Рієлтор" data-avatar="https://st4.depositphotos.com/4071389/24643/i/450/depositphotos_246435268-stock-photo-beautiful-smiling-young-woman-blue.jpg">
+        <img src="https://respect.kharkov.ua/wp-content/uploads/2021/05/Dizayn-odnokomnatnoy-kvartiry.jpg" alt="Квартира у Львові">
         <div class="property-info">
             <span class="property-type">Квартира</span>
-            <h3>Квартира з великими вікнами</h3>
-            <p class="property-location">Львів, Франківський район</p>
-            <p class="property-details">2 кімнати • 61 м²</p>
+            <h3>Квартира в ЖК відпочинок</h3>
+            <p class="property-location">Львів, Галицький район</p>
+            <p class="property-details">2 кімнати • 59 м²</p>
             <div class="property-bottom">
-                <span class="price">$74 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                <span class="price">$430</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
+    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="1" data-area="45" data-price-usd="340" data-deal="Оренда" data-phone="+380675555555" data-name="Аріна" data-role="Рієлтор" data-avatar="https://st2.depositphotos.com/1054848/6561/i/450/depositphotos_65612487-stock-photo-happy-mature-woman.jpg">
+        <img src="https://assets.leoceramika.com/assets/global/upload/files/59-1.jpg" alt="Квартира в Одесі">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Квартира в центрі міста</h3>
+            <p class="property-location">Одеса, Київський район</p>
+            <p class="property-details">1 кімнатна • 45 м²</p>
+            <div class="property-bottom">
+                <span class="price">$340</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
 
-    <div class="property-card" data-type="Будинок" data-city="Київська область" data-rooms="5" data-area="180" data-price-usd="210000" data-deal="Купівля">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" alt="Будинок у Києві">
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Будинок" data-city="Київська область" data-rooms="5" data-area="180" data-price-usd="210000" data-deal="Купівля" data-phone="+380676666666" data-name="Павло" data-role="Продавець" data-avatar="https://st.depositphotos.com/1075946/3525/i/450/depositphotos_35250757-stock-photo-handsome-man-sitting-at-the.jpg">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" alt="Будинок в Києві">
         <div class="property-info">
             <span class="property-type">Будинок</span>
             <h3>Просторий будинок для сім’ї</h3>
@@ -179,12 +224,17 @@
             <p class="property-details">5 кімнат • 180 м²</p>
             <div class="property-bottom">
                 <span class="price">$210 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
 
-    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="1" data-area="42" data-price-usd="58000" data-deal="Купівля">
+    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="1" data-area="42" data-price-usd="58000" data-deal="Купівля" data-phone="+380677777777" data-name=" Микита" data-role="Рієлтор" data-avatar="https://content.rozetka.com.ua/goods/images/big/413504774.jpg">
         <img src="https://images.unsplash.com/photo-1494526585095-c41746248156" alt="Квартира в Одесі">
         <div class="property-info">
             <span class="property-type">Квартира</span>
@@ -193,12 +243,34 @@
             <p class="property-details">1 кімната • 42 м²</p>
             <div class="property-bottom">
                 <span class="price">$58 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+               <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
+    <div class="property-card" data-type="Квартира" data-city="Київська область" data-rooms="2" data-area="54" data-price-usd="400" data-deal="Оренда" data-phone="+380678888888" data-name=" Олеся" data-role="Рієлтор" data-avatar="https://marieclaire.ua/wp-content/uploads/2017/12/GettyImages-848806266-1.jpg">
+        <img src="https://www.remontov.kiev.ua/wp-content/uploads/2023/02/pe17-1.jpg" alt="Квартира у Києві">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Без комісії!</h3>
+            <p class="property-location">Київська область</p>
+            <p class="property-details">2 кімнати • 46 м²</p>
+            <div class="property-bottom">
+                <span class="price">$400</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
 
-    <div class="property-card" data-type="Будинок" data-city="Одеса" data-rooms="4" data-area="160" data-price-usd="172000" data-deal="Купівля">
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Будинок" data-city="Одеса" data-rooms="4" data-area="160" data-price-usd="172000" data-deal="Купівля" data-phone="+380679999999" data-name="Олексій" data-role="Продавець" data-avatar="https://diadia.ua/image/cache/catalog/2025-11/19-11/D16998006-750x1000.jpg">
         <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" alt="Будинок в Одесі">
         <div class="property-info">
             <span class="property-type">Будинок</span>
@@ -207,12 +279,16 @@
             <p class="property-details">4 кімнати • 160 м²</p>
             <div class="property-bottom">
                 <span class="price">$172 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
 
-    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="3" data-area="89" data-price-usd="115000" data-deal="Купівля">
+    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="3" data-area="89" data-price-usd="115000" data-deal="Купівля" data-phone="+380671010101" data-name="Надія" data-role="Рієлтор" data-avatar="https://roksana-shop.com/files/products/d5ec3457-00c6-11f0-8203-70106fb0bf55.302x403.center.center.jpeg.pagespeed.ce.PSbJeEDHDR.jpg">
         <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85" alt="Квартира в Києві">
         <div class="property-info">
             <span class="property-type">Квартира</span>
@@ -221,12 +297,71 @@
             <p class="property-details">3 кімнати • 89 м²</p>
             <div class="property-bottom">
                 <span class="price">$115 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Будинок" data-city="Київ" data-rooms="4" data-area="130" data-price-usd="145000" data-deal="Купівля" data-phone="+380671212121" data-name="Влада" data-role="Продавець" data-avatar="https://images.prom.ua/6551983862_w300_h300_listivka-schastya-.jpg">
+        <img src="https://ireland.apollo.olxcdn.com/v1/files/fgk7h6jgpnof3-UA/image;s=1080x814" alt="Будинок в Києві">
+        <div class="property-info">
+            <span class="property-type">Будинок</span>
+            <h3>Дуплекс з новим ремонтом готовий до продажу</h3>
+            <p class="property-location">Київ, Святошинкськй район</p>
+            <p class="property-details">4 кімнати • 130 м²</p>
+            <div class="property-bottom">
+                <span class="price">$145 000</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="1" data-area="39" data-price-usd="72" data-deal="Оренда" data-phone="+380671313131" data-name="Наталія" data-role="Рієлтор" data-avatar="https://uainfo.org/static/ckef/img/%20%D0%BA%D1%80%D0%B0%D1%81%D0%B83.jpg">
+        <img src="https://nabuduvaly.com/wp-content/uploads/2023/11/Odnokimnatna-kvartyra-45-kv-m-kukhnia-vitalnia-foto-5.jpg" alt="Квартира у Львові">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Довгострокова оренда в ЖК Big Ben</h3>
+            <p class="property-location">Львів, Шевченківський район</p>
+            <p class="property-details">1 кімнати • 39 м²</p>
+            <div class="property-bottom">
+                <span class="price">$72</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Будинок" data-city="Одеса" data-rooms="5" data-area="340" data-price-usd="2075" data-deal="Оренда" data-phone="+380671414141" data-name="Павло" data-role="Рієлтор" data-avatar="https://radiotrek.rv.ua/uploads/media/4c/2f/4c2fd6f48165a1b8f58ed3cf363b6436_w960.jpg">
+        <img src="https://proektcottage.com.ua/wp-content/uploads/2018/06/r2_0002-1.jpg" alt="Будинок в Одесі">
+        <div class="property-info">
+            <span class="property-type">Будинок</span>
+            <h3>Просторий будинок</h3>
+            <p class="property-location">Одеса, Приморський район</p>
+            <p class="property-details">5 кімнати • 340 м²</p>
+            <div class="property-bottom">
+                <span class="price">$2 075</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
 
-    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="2" data-area="70" data-price-usd="79000" data-deal="Купівля">
+    <div class="property-card" data-type="Квартира" data-city="Львів" data-rooms="2" data-area="70" data-price-usd="79000" data-deal="Купівля" data-phone="+380671515151" data-name="Дмитро" data-role="Продавець" data-avatar="https://www.rbc.ua/static/img/f/r/freepik_com_490854_4448c86ff8fbe8edf2569eeaf0c0c808_480x270.jpg">
         <img src="https://images.unsplash.com/photo-1448630360428-65456885c650" alt="Квартира у Львові">
         <div class="property-info">
             <span class="property-type">Квартира</span>
@@ -235,12 +370,177 @@
             <p class="property-details">2 кімнати • 70 м²</p>
             <div class="property-bottom">
                 <span class="price">$79 000</span>
-                <a href="#" class="details-btn">Детальніше</a>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
             </div>
         </div>
     </div>
+    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="3" data-area="45" data-price-usd="700" data-deal="Оренда" data-phone="+380671616161" data-name="Аліна" data-role="Рієлтор" data-avatar="https://upload.wikimedia.org/wikipedia/commons/8/82/%D0%A1%D0%B5%CC%81%D1%80%D0%BF%D0%B5%D0%BD%D1%8C_%D1%83_%D0%BF%D1%96%D0%B4%D0%BD%D1%96%D0%B6%D0%B6%D1%8F_%D0%93%D0%BE%D0%B2%D0%B5%D1%80%D0%BB%D0%B8.jpg">
+        <img src="https://emotion.biz.ua/proekti/066_misto_kvitiv/001.jpg" alt="Квартира в Києві">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Затишна квартира біля метро</h3>
+            <p class="property-location">Київ, Солом'янський район</p>
+            <p class="property-details">3 кімнати • 69 м²</p>
+            <div class="property-bottom">
+                <span class="price">$700</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="2" data-area="67" data-price-usd="77000" data-deal="Купівля"data-phone="+380671717171" data-name="Олег" data-role="Продавець" data-avatar="https://img.freepik.com/free-photo/mountains-lake_1398-1150.jpg">
+        <img src="https://polyakova.biz/content/portfolio/353/previewlist-353.jpg" alt="Квартира в Одесі">
+        <div class="property-info">
+            <span class="property-type">Квартира</span>
+            <h3>Квартира з дизайнерським ремонтом</h3>
+            <p class="property-location">Одеса, Київський район</p>
+            <p class="property-details">2 кімнати • 67 м²</p>
+            <div class="property-bottom">
+                <span class="price">$77000</span>
+                <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="property-card" data-type="Квартира" data-city="Київ" data-rooms="2" data-area="64" data-price-usd="89000" data-deal="Купівля" data-phone="+38067118181" data-name="Олена" data-role="Рієлтор" data-avatar="https://abrakadabra.fun/uploads/posts/2022-09/1663937013_4-abrakadabra-fun-p-priroda-6.jpg">
+    <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858" alt="Квартира в Києві">
+    <div class="property-info">
+        <span class="property-type">Квартира</span>
+        <h3>Квартира з панорамними вікнами</h3>
+        <p class="property-location">Київ, Оболонський район</p>
+        <p class="property-details">2 кімнати • 64 м²</p>
+        <div class="property-bottom">
+            <span class="price">$89 000</span>
+            <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+        </div>
+    </div>
+</div>
+
+<div class="property-card" data-type="Будинок" data-city="Львів" data-rooms="4" data-area="155" data-price-usd="168000" data-deal="Купівля" data-phone="+380671919191" data-name="Вероніка" data-role="Рієлтор" data-avatar="https://slovoproslovo.info/wp-content/uploads/2021/04/ukraine_mountains_499280.jpg">
+    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be" alt="Будинок у Львові">
+    <div class="property-info">
+        <span class="property-type">Будинок</span>
+        <h3>Будинок із терасою та двором</h3>
+        <p class="property-location">Львів, Личаківський район</p>
+        <p class="property-details">4 кімнати • 155 м²</p>
+        <div class="property-bottom">
+            <span class="price">$168 000</span>
+            <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+        </div>
+    </div>
+</div>
+
+<div class="property-card" data-type="Квартира" data-city="Одеса" data-rooms="2" data-area="58" data-price-usd="520" data-deal="Оренда">
+    <img src="https://oneandhome.ru/sites/default/files/blog2022/sovremennaya-kvartira-modnie-resheniya-i-stilnie-idei-02.JPG" alt="Квартира в Одесі" data-phone="+380672020202" data-name="Микола" data-role="Рієлтор" data-avatar="https://print4you.com.ua/upload/resize_cache/iblock/5d3/444_480_1/5d3b464e01938b334dfa5136015a6427.jpg">
+    <div class="property-info">
+        <span class="property-type">Квартира</span>
+        <h3>Оренда квартири біля моря</h3>
+        <p class="property-location">Одеса, Приморський район</p>
+        <p class="property-details">2 кімнати • 58 м²</p>
+        <div class="property-bottom">
+            <span class="price">$520</span>
+            <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+        </div>
+    </div>
+</div>
+
+<div class="property-card" data-type="Будинок" data-city="Київська область" data-rooms="5" data-area="220" data-price-usd="1950" data-deal="Оренда" data-phone="+380672121212" data-name=" Микита" data-role="Продавець" data-avatar="https://posterix.com.ua/images/product_images/popup_images/13015VE.jpg">
+    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6" alt="Будинок у Київській області">
+    <div class="property-info">
+        <span class="property-type">Будинок</span>
+        <h3>Оренда заміського будинку</h3>
+        <p class="property-location">Київська область</p>
+        <p class="property-details">5 кімнат • 220 м²</p>
+        <div class="property-bottom">
+            <span class="price">$1 950</span>
+            <div class="card-buttons">
+        <img src="heart-b.png"
+             class="card-heart">
+
+        <a href="#" class="details-btn">Детальніше</a>
+    </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="load-more-wrap">
+    <button id="togglePropertiesBtn" class="toggle-properties-btn">Більше оголошень</button>
 </div>
 </section>
+
+
+<section class="roadmap">
+    <h2>Пошук нерухомості в 4 кроки</h2>
+    <p class="roadmap-subtitle">
+        Швидкий та зручний спосіб знайти житло відповідно до ваших потреб
+    </p>
+
+    <div class="roadmap-container">
+
+        <div class="roadmap-card">
+            <div class="roadmap-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/751/751463.png" alt="Пошук">
+            </div>
+            <h3>Пошук</h3>
+            <p>Переглядайте доступні об’єкти нерухомості.</p>
+        </div>
+
+        <div class="roadmap-card">
+            <div class="roadmap-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="Фільтр">
+            </div>
+            <h3>Фільтрація</h3>
+            <p>Обирайте місто, ціну та інші параметри.</p>
+        </div>
+
+        <div class="roadmap-card">
+            <div class="roadmap-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Перегляд">
+            </div>
+            <h3>Перегляд</h3>
+            <p>Порівнюйте характеристики та фото об’єктів.</p>
+        </div>
+
+        <div class="roadmap-card">
+            <div class="roadmap-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Вибір">
+            </div>
+            <h3>Вибір</h3>
+            <p>Знаходьте варіант, який вам підходить.</p>
+        </div>
+
+    </div>
+</section>
+
+
 <section class="advantages">
     <h2>Чому обирають нашу платформу</h2>
 
@@ -375,6 +675,50 @@
  </div>
             <button class="reviews-arrow right">&#8594;</button>
 </section>
+<div class="modal" id="propertyModal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+
+        <img id="modalImage" src="" alt="Фото нерухомості">
+
+            <div class="modal-thumbs">
+                <img class="modal-thumb" src="" alt="Фото 1">
+                <img class="modal-thumb" src="" alt="Фото 2">
+                <img class="modal-thumb" src="" alt="Фото 3">
+        </div>
+
+        <h2 id="modalTitle"></h2>
+        <p id="modalLocation"></p>
+        <p id="modalDetails"></p>
+        <p id="modalPrice"></p>
+            <div class="modal-extra">
+                <p><b>Тип угоди:</b> <span id="modalDeal"></span></p>
+                <p><b>Поверх:</b> <span id="modalFloor"></span></p>
+                <p><b>Стан:</b> <span id="modalState"></span></p>
+                 <p><b>Опис:</b> <span id="modalDescription"></span></p>
+            </div>
+           <div class="seller-info">
+
+    <div class="seller-top">
+        <img id="sellerAvatar" class="seller-avatar">
+
+        <div class="seller-text">
+            <h4 id="sellerName"></h4>
+            <p id="sellerRole"></p>
+        </div>
+    </div>
+
+    <a href="#" class="contact-btn">Зв’язатися з продавцем</a>
+<img src="heart-b.png" class="modal-heart">
+</div>
+
+<div class="modal-actions">
+    
+</div>
+
+        
+    </div>
+</div>
 <script src="js/script.js"></script>
 </body>
 </html>

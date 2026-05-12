@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>KeySpace</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+
+    <a href="index.html">
+        <img src="key.png" class="logo">
+    </a>
+
+    <nav class="menu">
+
+        <a href="profile.html" class="favorite-btn">
+            <img src="heart-b.png" class="heart-icon">
+            <span id="favoritesCount">0</span>
+        </a>
+
+        <a href="profile.html" class="profile-btn">
+            <img src="avatar.png" class="avatar" id="headerAvatar">
+            <span id="headerUserName">Ваш профіль</span>
+        </a>
+        <a href="profile.html" class="add-btn">Додати оголошення</a>
+    </nav>
+
+</header>
+
+<section class="profile-page">
+
+    <div class="profile-layout">
+
+        <aside class="profile-sidebar">
+            <img src="avatar.png" id="profileAvatar" class="profile-avatar">
+
+            <h2 id="profileName">Ваш профіль</h2>
+            <p id="profileEmail">email</p>
+
+        </aside>
+
+        <main class="profile-main">
+
+            <div class="profile-tabs">
+                <button class="profile-tab active" data-tab="favorites">Обрані</button>
+                <button class="profile-tab" data-tab="viewed">Переглянуті</button>
+                <button class="profile-tab" data-tab="myAds">Мої оголошення</button>
+            </div>
+
+            <div class="profile-content active" id="favorites">
+                <h3>Обрані оголошення</h3>
+                <div id="favoriteList" class="profile-list">
+                    <p class="empty-text">Поки що немає обраних оголошень.</p>
+                </div>
+            </div>
+
+            <div class="profile-content" id="viewed">
+                <h3>Переглянуті оголошення</h3>
+                <div id="viewedList" class="profile-list">
+                    <p class="empty-text">Поки що немає переглянутих оголошень.</p>
+                </div>
+            </div>
+
+            <div class="profile-content" id="myAds">
+                <h3>Мої оголошення</h3>
+                <button class="add-profile-ad">Додати оголошення</button>
+
+                <div id="myAdsList" class="profile-list">
+                    <p class="empty-text">Ви ще не додали жодного оголошення.</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+</section>
+
+
+<div class="modal" id="profilePropertyModal">
+    <div class="modal-content">
+        <span class="modal-close" id="profileModalClose">&times;</span>
+
+        <img id="profileModalImage" src="" alt="Фото оголошення">
+
+        <div class="modal-thumbs">
+            <img class="profile-modal-thumb" src="" alt="Фото 1">
+            <img class="profile-modal-thumb" src="" alt="Фото 2">
+            <img class="profile-modal-thumb" src="" alt="Фото 3">
+        </div>
+
+        <h2 id="profileModalTitle"></h2>
+        <p id="profileModalLocation"></p>
+        <p id="profileModalDetails"></p>
+        <p id="profileModalPrice"></p>
+
+        <div class="modal-extra">
+            <p><b>Тип угоди:</b> <span id="profileModalDeal"></span></p>
+            <p><b>Поверх:</b> <span id="profileModalFloor"></span></p>
+            <p><b>Стан:</b> <span id="profileModalState"></span></p>
+            <p><b>Опис:</b> <span id="profileModalDescription"></span></p>
+        </div>
+
+        <div class="seller-info">
+            <div class="seller-top">
+                <img src="avatar.png" class="seller-avatar" id="profileSellerAvatar">
+
+                <div class="seller-text">
+                    <h4 id="profileSellerName">Продавець</h4>
+                    <p id="profileSellerRole">Рієлтор</p>
+                </div>
+            </div>
+
+            <div class="seller-bottom">
+                <button class="contact-btn" id="profileContactBtn">Зв’язатися з продавцем</button>
+
+                <img src="heart-r.png"
+                     class="modal-heart"
+                     id="profileModalHeart">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/profile.js"></script>
+</body>
+</html>
