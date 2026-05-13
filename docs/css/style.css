@@ -54,25 +54,6 @@ padding:80px 40px;
 background:#ffffff;
 }
 
-.properties-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:30px;
-gap:20px;
-}
-
-.properties-top h2{
-font-size:36px;
-color:#0a1f44;
-margin:0;
-}
-
-
-.all-properties-btn:hover{
-background:#12305f;
-}
-
 
 
 .properties-grid{
@@ -350,16 +331,6 @@ font-size:18px;
 transition:0.3s;
 }
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(-5px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
 
 
 .top-bar{
@@ -948,12 +919,7 @@ font-weight:bold;
 color:#0a1f44;
 }
 
-.modal-actions{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:20px;
-}
+
 .seller-bottom{
     display:flex;
     align-items:center;
@@ -1035,32 +1001,6 @@ transform:scale(1.05);
     color:#555;
     font-size:15px;
 }
-
-.show-phone-btn{
-    margin-top:8px;
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    background:#0a1f44;
-    color:white;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-.show-phone-btn:hover{
-    background:#184ca4;
-}
-
-.seller-phone{
-    margin-top:10px;
-    font-weight:bold;
-    color:#0a1f44;
-}
-
-.hidden{
-    display:none;
-}
-
 
 
 .auth-page{
@@ -1378,10 +1318,6 @@ transform:scale(1.05);
 
 
 @media (max-width: 768px){
-
-
-
-
     .menu{
         gap:12px;
         align-items:center;

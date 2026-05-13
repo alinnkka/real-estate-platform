@@ -750,14 +750,7 @@ cardHearts.forEach(heart => {
             favorites = favorites.filter(item => item.title !== title);
             heart.src = "heart-b.png";
         } else {
-            const favoriteItem = {
-                title: title,
-                image: card.querySelector("img").src,
-                type: card.dataset.type,
-                location: card.querySelector(".property-location").textContent,
-                details: card.querySelector(".property-details").textContent,
-                price: card.querySelector(".price").textContent
-            };
+        const favoriteItem = getCardFullData(card);
 
             favorites.push(favoriteItem);
             heart.src = "heart-r.png";
