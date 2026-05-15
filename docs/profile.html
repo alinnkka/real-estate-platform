@@ -64,14 +64,45 @@
                 </div>
             </div>
 
-            <div class="profile-content" id="myAds">
-                <h3>Мої оголошення</h3>
-                <button class="add-profile-ad">Додати оголошення</button>
+<div class="profile-content" id="myAds">
+    <h3>Мої оголошення</h3>
 
-                <div id="myAdsList" class="profile-list">
-                    <p class="empty-text">Ви ще не додали жодного оголошення.</p>
-                </div>
-            </div>
+    <button class="add-profile-ad" id="showMyPostForm">Додати оголошення</button>
+
+    <form id="myPostForm" class="my-post-form" style="display:none;">
+        <input type="text" id="myPostTitle" placeholder="Назва оголошення">
+        <input type="text" id="myPostCity" placeholder="Місто">
+        <input type="text" id="myPostDistrict" placeholder="Район">
+
+        <select id="myPostType">
+            <option value="">Тип нерухомості</option>
+            <option value="Квартира">Квартира</option>
+            <option value="Будинок">Будинок</option>
+        </select>
+
+        <select id="myPostDeal">
+            <option value="">Тип угоди</option>
+            <option value="Купівля">Купівля</option>
+            <option value="Оренда">Оренда</option>
+        </select>
+
+        <input type="number" id="myPostRooms" placeholder="Кількість кімнат">
+        <input type="number" id="myPostArea" placeholder="Площа м²">
+        <input type="number" id="myPostPrice" placeholder="Ціна $">
+        <input type="text" id="myPostFloor" placeholder="Поверх">
+        <input type="text" id="myPostState" placeholder="Стан">
+        <input type="tel" id="myPostPhone" placeholder="Телефон">
+
+        <input type="file" id="myPostPhotos" accept="image/*" multiple>
+        <textarea id="myPostDescription" placeholder="Опис оголошення"></textarea>
+
+        <button type="submit">Зберегти оголошення</button>
+    </form>
+
+    <div id="myPostsList" class="profile-list">
+        <p class="empty-text">Ви ще не додали жодного оголошення.</p>
+    </div>
+</div>
 
         </main>
 
@@ -90,6 +121,7 @@
             <img class="profile-modal-thumb" src="" alt="Фото 1">
             <img class="profile-modal-thumb" src="" alt="Фото 2">
             <img class="profile-modal-thumb" src="" alt="Фото 3">
+            <img class="profile-modal-thumb" src="" alt="Фото 4">
         </div>
 
         <h2 id="profileModalTitle"></h2>

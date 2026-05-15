@@ -3,11 +3,33 @@ const authName = document.getElementById("authName");
 const authAvatar = document.getElementById("authAvatar");
 const authEmail = document.getElementById("authEmail");
 const authPassword = document.getElementById("authPassword");
+const togglePassword = document.getElementById("togglePassword");
 const authBtn = document.getElementById("authBtn");
 const switchAuth = document.getElementById("switchAuth");
-
+const toast = document.getElementById("toast");
 let isRegister = false;
+function showToast(message) {
 
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 4000);
+
+}
+togglePassword.addEventListener("click", () => {
+
+    if (authPassword.type === "password") {
+        authPassword.type = "text";
+        togglePassword.textContent = "Сховати";
+    } else {
+        authPassword.type = "password";
+        togglePassword.textContent = "Показати";
+    }
+
+});
 switchAuth.addEventListener("click", () => {
     isRegister = !isRegister;
 
@@ -42,27 +64,56 @@ function getAvatarBase64(file, callback) {
 }
 
 authBtn.addEventListener("click", () => {
-    const name = authName.value.trim();
-    const email = authEmail.value.trim();
+    let name = authName.value.trim();
+
+    if (name.length > 0) {
+        name =
+            name.charAt(0).toUpperCase() +
+            name.slice(1).toLowerCase();
+    }
+
+    const email = authEmail.value.trim().toLowerCase();
     const password = authPassword.value.trim();
+
+    if (!email || !password) {
+        showToast("Заповніть email і пароль");
+        return;
+    }
+
+    const allowedDomains = [
+        "gmail.com",
+        "icloud.com",
+        "ukr.net",
+        "outlook.com"
+    ];
+
+    const emailParts = email.split("@");
+
+    if (
+        emailParts.length !== 2 ||
+        !allowedDomains.includes(emailParts[1].toLowerCase())
+    ) {
+        showToast("Введіть коректний email. Дозволені домени: gmail@com, icloud@com, ukr@net, outlook@com");
+        return;
+    }
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
     if (!email || !password) {
-        alert("Заповніть email і пароль");
+        showToast("Заповніть email і пароль");
         return;
     }
 
     if (isRegister) {
         if (!name) {
-            alert("Введіть ім’я");
+            showToast("Введіть ім’я");
             return;
         }
 
         const existingUser = users.find(user => user.email === email);
 
         if (existingUser) {
-            alert("Користувач з таким email вже існує");
+            showToast("Користувач з таким email вже існує");
             return;
         }
 
@@ -80,7 +131,7 @@ authBtn.addEventListener("click", () => {
             localStorage.setItem("currentUser", JSON.stringify(user));
             localStorage.setItem("isLoggedIn", "true");
 
-            alert("Реєстрація успішна");
+            showToast("Реєстрація успішна");
             window.location.href = "index.html";
         });
 
@@ -88,19 +139,19 @@ authBtn.addEventListener("click", () => {
         const user = users.find(user => user.email === email);
 
         if (!user) {
-            alert("Користувача з таким email не знайдено");
+            showToast("Користувача з таким email не знайдено");
             return;
         }
 
         if (user.password !== password) {
-            alert("Неправильний пароль");
+            showToast("Неправильний пароль");
             return;
         }
 
         localStorage.setItem("currentUser", JSON.stringify(user));
         localStorage.setItem("isLoggedIn", "true");
 
-        alert("Вхід успішний");
+        showToast("Вхід успішний");
         window.location.href = "index.html";
     }
 });

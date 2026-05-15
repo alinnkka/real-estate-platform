@@ -632,17 +632,18 @@ function isModalFavorite(){
 modalHeart.src = isModalFavorite() ? "heart-r.png" : "heart-b.png";
 
 modalHeart.onclick = function() {
+    const logged = localStorage.getItem("isLoggedIn");
+
+    if (logged !== "true") {
+        openLoginModal();
+        return;
+    }
 
     if (isModalFavorite()) {
         favorites = favorites.filter(item => item.title !== title);
         modalHeart.src = "heart-b.png";
     } else {
-const extra = propertyExtraData[title];
-
-
-
-const favoriteItem = getCardFullData(card);
-
+        const favoriteItem = getCardFullData(card);
         favorites.push(favoriteItem);
         modalHeart.src = "heart-r.png";
     }
@@ -712,20 +713,19 @@ const favoritesCount = document.getElementById("favoritesCount");
 
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-let favoritesKey = "favorites_guest";
+let favorites = [];
+let viewed = [];
+
+let favoritesKey = null;
+let viewedKey = null;
 
 if (currentUser) {
     favoritesKey = `favorites_${currentUser.email}`;
-}
-
-let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
-let viewedKey = "viewed_guest";
-
-if (currentUser) {
     viewedKey = `viewed_${currentUser.email}`;
-}
 
-let viewed = JSON.parse(localStorage.getItem(viewedKey)) || [];
+    favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+    viewed = JSON.parse(localStorage.getItem(viewedKey)) || [];
+}
 function updateFavoritesCount(){
     if (favoritesCount) {
         favoritesCount.textContent = favorites.length;
@@ -745,6 +745,12 @@ cardHearts.forEach(heart => {
     heart.src = isFavorite() ? "heart-r.png" : "heart-b.png";
 
     heart.addEventListener("click", () => {
+    const logged = localStorage.getItem("isLoggedIn");
+
+    if (logged !== "true") {
+    openLoginModal();
+    return;
+    }
 
         if (isFavorite()) {
             favorites = favorites.filter(item => item.title !== title);
@@ -855,3 +861,18 @@ if (addBtn) {
     });
 }
 
+const headerAddPostBtn = document.getElementById("headerAddPostBtn");
+
+if (headerAddPostBtn) {
+    headerAddPostBtn.addEventListener("click", event => {
+        event.preventDefault();
+
+        const logged = localStorage.getItem("isLoggedIn");
+
+        if (logged === "true") {
+            window.location.href = "profile.html#myAds";
+        } else {
+            openLoginModal();
+        }
+    });
+}

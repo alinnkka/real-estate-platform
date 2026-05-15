@@ -15,7 +15,13 @@
         <input type="text" id="authName" placeholder="Ваше ім’я" style="display:none">
         <input type="file" id="authAvatar" accept="image/*" style="display:none;">
         <input type="email" id="authEmail" placeholder="Email">
+        <div class="password-wrapper">
         <input type="password" id="authPassword" placeholder="Пароль">
+
+        <span id="togglePassword" class="toggle-password">
+         Показати
+        </span>
+    </div>
 
         <button id="authBtn">Увійти</button>
 
@@ -26,7 +32,7 @@
         <a href="index.html" class="back-home">← Повернутися на головну</a>
     </div>
 </section>
-
+<div id="toast"></div>
 <script src="js/auth.js"></script>
 </body>
 </html>

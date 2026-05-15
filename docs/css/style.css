@@ -1469,3 +1469,159 @@ transform:scale(1.05);
         width:32px;
     }
 }
+
+.password-wrapper{
+    position:relative;
+    width:100%;
+    margin-bottom:15px;
+}
+
+.password-wrapper input{
+    width:100%;
+    padding-right:95px;
+    margin-bottom:0;
+}
+
+.toggle-password{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:14px;
+    color:#0a1f44;
+    font-weight:bold;
+    z-index:5;
+    user-select:none;
+}
+
+.toggle-password:hover{
+    color:#0a1f44;
+}
+#toast{
+    position:fixed;
+    top:25px;
+    right:25px;
+    background:#0a1f44;
+    color:white;
+    padding:16px 20px;
+    border-radius:14px;
+    font-size:14px;
+    font-weight:500;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    opacity:0;
+    visibility:hidden;
+    transform:translateX(40px);
+    transition:0.4s;
+    z-index:9999;
+    max-width:320px;
+    line-height:1.5;
+}
+
+#toast.show{
+    opacity:1;
+    visibility:visible;
+    transform:translateX(0);
+}
+
+
+.my-post-form{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:15px;
+    margin-bottom:30px;
+    background:#f4f6f8;
+    padding:25px;
+    border-radius:20px;
+}
+
+.my-post-form input,
+.my-post-form select,
+.my-post-form textarea{
+    padding:14px 16px;
+    border:1px solid #d6dbe3;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+    box-sizing:border-box;
+    background:white;
+}
+
+.my-post-form textarea,
+.my-post-form button,
+#myPostPhotos{
+    grid-column:1 / -1;
+}
+
+.my-post-form textarea{
+    min-height:110px;
+    resize:none;
+}
+
+.my-post-form button{
+    border:none;
+    background:#0a1f44;
+    color:white;
+    padding:14px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.my-post-form button:hover{
+    background:#184ca4;
+}
+
+@media(max-width:768px){
+    .my-post-form{
+        grid-template-columns:1fr;
+    }
+}
+
+.profile-property-card{
+    position:relative;
+}
+
+.delete-post-btn{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    color:#0a1f44;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    z-index:5;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.delete-post-btn:hover{
+    background:#0a1f44;
+    color:white;
+}
+
+.edit-post-btn{
+    position:absolute;
+    top:12px;
+    right:52px;
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    color:#0a1f44;
+    font-size:18px;
+    cursor:pointer;
+    z-index:5;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.edit-post-btn:hover{
+    background:#0a1f44;
+    color:white;
+}
