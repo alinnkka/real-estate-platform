@@ -7,20 +7,19 @@ const togglePassword = document.getElementById("togglePassword");
 const authBtn = document.getElementById("authBtn");
 const switchAuth = document.getElementById("switchAuth");
 const toast = document.getElementById("toast");
+
 let isRegister = false;
+
 function showToast(message) {
-
     toast.textContent = message;
-
     toast.classList.add("show");
 
     setTimeout(() => {
         toast.classList.remove("show");
     }, 4000);
-
 }
-togglePassword.addEventListener("click", () => {
 
+togglePassword.addEventListener("click", () => {
     if (authPassword.type === "password") {
         authPassword.type = "text";
         togglePassword.textContent = "Сховати";
@@ -28,8 +27,8 @@ togglePassword.addEventListener("click", () => {
         authPassword.type = "password";
         togglePassword.textContent = "Показати";
     }
-
 });
+
 switchAuth.addEventListener("click", () => {
     isRegister = !isRegister;
 
@@ -49,6 +48,7 @@ switchAuth.addEventListener("click", () => {
 });
 
 function getAvatarBase64(file, callback) {
+
     if (!file) {
         callback("avatar.png");
         return;
@@ -56,20 +56,39 @@ function getAvatarBase64(file, callback) {
 
     const reader = new FileReader();
 
-    reader.onload = function() {
-        callback(reader.result);
+    reader.onload = function(event) {
+
+        const img = new Image();
+
+        img.onload = function() {
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const maxWidth = 300;
+            const scaleSize = maxWidth / img.width;
+
+            canvas.width = maxWidth;
+            canvas.height = img.height * scaleSize;
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+            callback(compressedBase64);
+        };
+
+        img.src = event.target.result;
     };
 
     reader.readAsDataURL(file);
 }
 
-authBtn.addEventListener("click", () => {
+authBtn.addEventListener("click", async () => {
     let name = authName.value.trim();
 
     if (name.length > 0) {
-        name =
-            name.charAt(0).toUpperCase() +
-            name.slice(1).toLowerCase();
+        name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     }
 
     const email = authEmail.value.trim().toLowerCase();
@@ -93,14 +112,7 @@ authBtn.addEventListener("click", () => {
         emailParts.length !== 2 ||
         !allowedDomains.includes(emailParts[1].toLowerCase())
     ) {
-        showToast("Введіть коректний email. Дозволені домени: gmail@com, icloud@com, ukr@net, outlook@com");
-        return;
-    }
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    if (!email || !password) {
-        showToast("Заповніть email і пароль");
+        showToast("Введіть коректний email. Дозволені домени: gmail.com, icloud.com, ukr.net, outlook.com");
         return;
     }
 
@@ -110,48 +122,67 @@ authBtn.addEventListener("click", () => {
             return;
         }
 
-        const existingUser = users.find(user => user.email === email);
+        getAvatarBase64(authAvatar.files[0], async function (avatar) {
+            try {
+                const response = await fetch("http://localhost:5000/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password,
+                        avatar: avatar
+                    })
+                });
 
-        if (existingUser) {
-            showToast("Користувач з таким email вже існує");
-            return;
-        }
+                const data = await response.json();
 
-        getAvatarBase64(authAvatar.files[0], function(avatar) {
-            const user = {
-                name: name,
-                email: email,
-                password: password,
-                avatar: avatar
-            };
+                if (!response.ok) {
+                    showToast(data.message);
+                    return;
+                }
 
-            users.push(user);
+                
+                localStorage.setItem("currentUser", JSON.stringify(data.user));
+                localStorage.setItem("isLoggedIn", "true");
 
-            localStorage.setItem("users", JSON.stringify(users));
-            localStorage.setItem("currentUser", JSON.stringify(user));
-            localStorage.setItem("isLoggedIn", "true");
+                window.location.href = "./index.html";
 
-            showToast("Реєстрація успішна");
-            window.location.href = "index.html";
+                } catch (error) {
+                    console.log(error);
+                }
         });
 
     } else {
-        const user = users.find(user => user.email === email);
+        try {
+            const response = await fetch("http://localhost:5000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
 
-        if (!user) {
-            showToast("Користувача з таким email не знайдено");
-            return;
-        }
+            const data = await response.json();
 
-        if (user.password !== password) {
-            showToast("Неправильний пароль");
-            return;
-        }
+            if (!response.ok) {
+                showToast(data.message);
+                return;
+            }
 
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        localStorage.setItem("isLoggedIn", "true");
+            
+            localStorage.setItem("currentUser", JSON.stringify(data.user));
+            localStorage.setItem("isLoggedIn", "true");
 
-        showToast("Вхід успішний");
-        window.location.href = "index.html";
+            window.location.href = "./index.html";
+
+            } catch (error) {
+                console.log(error);
+            }
     }
 });

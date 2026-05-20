@@ -1,3 +1,13 @@
+fetch("http://localhost:5000/api/test")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+    })
+    .catch(error => {
+        console.log("Помилка:", error);
+    });
+
+
 let lastScroll = 0;
 const header = document.querySelector("header");
 
@@ -48,51 +58,372 @@ setInterval(() => {
 
 showImage(currentIndex);
 
-const slides = document.querySelectorAll(".reviews-slide");
-const dots = document.querySelectorAll(".dot");
+const reviewBtn = document.querySelector(".review-btn");
+const reviewLoginModal = document.getElementById("reviewLoginModal");
+const reviewLoginClose = document.getElementById("reviewLoginClose");
+
+const reviewModal = document.getElementById("reviewModal");
+const reviewModalClose = document.getElementById("reviewModalClose");
+const saveReviewBtn = document.getElementById("saveReviewBtn");
+
+const reviewText = document.getElementById("reviewText");
+const reviewRole = document.getElementById("reviewRole");
+const reviewStars = document.getElementById("reviewStars");
+
+
+let reviewIndex = 0;
+let allReviews = [];
+
+function createReviewCard(review) {
+    return `
+        <div class="review-card">
+            <div class="review-user">
+                <img src="${review.avatar}" alt="${review.name}">
+                <div>
+                    <h3>${review.name}</h3>
+                    <span>${review.role}</span>
+                </div>
+            </div>
+
+            <div class="stars">${review.stars}</div>
+            <p>${review.text}</p>
+        </div>
+    `;
+}
+
+function collectDefaultReviews() {
+    const cards = document.querySelectorAll(".reviews-slide .review-card");
+
+    cards.forEach(card => {
+        allReviews.push(card.outerHTML);
+    });
+}
+
+function loadUserReviews() {
+    const reviews = JSON.parse(localStorage.getItem("userReviews")) || [];
+
+    reviews.forEach(review => {
+        allReviews.unshift(createReviewCard(review));
+    });
+}
+
+function renderReviews() {
+    const reviewsContainer = document.querySelector(".reviews-container");
+
+    if (!reviewsContainer) return;
+
+    reviewsContainer.innerHTML = "";
+
+    const slide = document.createElement("div");
+    slide.className = "reviews-slide active";
+
+    for (let i = 0; i < 3; i++) {
+        const reviewPosition = (reviewIndex + i) % allReviews.length;
+        slide.innerHTML += allReviews[reviewPosition];
+    }
+
+    reviewsContainer.appendChild(slide);
+}
+
+if (reviewBtn) {
+    reviewBtn.addEventListener("click", event => {
+        event.preventDefault();
+
+        const logged = localStorage.getItem("isLoggedIn");
+
+        if (logged !== "true") {
+            reviewLoginModal.style.display = "flex";
+        } else {
+            reviewModal.style.display = "flex";
+        }
+    });
+}
+
+if (saveReviewBtn) {
+    saveReviewBtn.addEventListener("click", event => {
+        event.preventDefault();
+
+        const text = reviewText.value.trim();
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+
+        if (!text) {
+            alert("Напишіть відгук");
+            return;
+        }
+
+        if (!user) {
+            reviewModal.style.display = "none";
+            reviewLoginModal.style.display = "flex";
+            return;
+        }
+
+        const review = {
+            name: user.name,
+            avatar: user.avatar || "avatar.png",
+            role: reviewRole.value,
+            stars: reviewStars.value,
+            text: text
+        };
+
+        const reviews = JSON.parse(localStorage.getItem("userReviews")) || [];
+        reviews.unshift(review);
+        localStorage.setItem("userReviews", JSON.stringify(reviews));
+
+        allReviews.unshift(createReviewCard(review));
+        reviewIndex = 0;
+        renderReviews();
+
+        reviewText.value = "";
+        reviewModal.style.display = "none";
+    });
+}
+
+if (reviewModalClose) {
+    reviewModalClose.addEventListener("click", () => {
+        reviewModal.style.display = "none";
+    });
+}
+
+if (reviewModal) {
+    reviewModal.addEventListener("click", event => {
+        if (event.target === reviewModal) {
+            reviewModal.style.display = "none";
+        }
+    });
+}
+
+if (reviewLoginClose) {
+    reviewLoginClose.addEventListener("click", () => {
+        reviewLoginModal.style.display = "none";
+    });
+}
+
+if (reviewLoginModal) {
+    reviewLoginModal.addEventListener("click", event => {
+        if (event.target === reviewLoginModal) {
+            reviewLoginModal.style.display = "none";
+        }
+    });
+}
+
 const prevReviewBtn = document.querySelector(".reviews-arrow.left");
 const nextReviewBtn = document.querySelector(".reviews-arrow.right");
 
-let reviewIndex = 0;
-
-function showSlide(i) {
-  slides.forEach(slide => slide.classList.remove("active"));
-  dots.forEach(dot => dot.classList.remove("active"));
-
-  if (slides[i]) slides[i].classList.add("active");
-  if (dots[i]) dots[i].classList.add("active");
-}
-
-dots.forEach((dot, i) => {
-  dot.addEventListener("click", () => {
-    reviewIndex = i;
-    showSlide(reviewIndex);
-  });
-});
-
 if (nextReviewBtn) {
-  nextReviewBtn.addEventListener("click", () => {
-    reviewIndex++;
-    if (reviewIndex >= slides.length) {
-      reviewIndex = 0;
-    }
-    showSlide(reviewIndex);
-  });
+    nextReviewBtn.addEventListener("click", () => {
+        reviewIndex++;
+
+        if (reviewIndex >= allReviews.length) {
+            reviewIndex = 0;
+        }
+
+        renderReviews();
+    });
 }
 
 if (prevReviewBtn) {
-  prevReviewBtn.addEventListener("click", () => {
-    reviewIndex--;
-    if (reviewIndex < 0) {
-      reviewIndex = slides.length - 1;
-    }
-    showSlide(reviewIndex);
-  });
+    prevReviewBtn.addEventListener("click", () => {
+        reviewIndex--;
+
+        if (reviewIndex < 0) {
+            reviewIndex = allReviews.length - 1;
+        }
+
+        renderReviews();
+    });
 }
 
-showSlide(reviewIndex);
+collectDefaultReviews();
+loadUserReviews();
+renderReviews();
 
-const propertyCards = document.querySelectorAll(".property-card");
+let propertyCards = document.querySelectorAll(".property-card");
+function renderUserPostsOnHome() {
+    const propertiesGrid = document.querySelector(".properties-grid");
+    const allPosts = JSON.parse(localStorage.getItem("allUserPosts")) || [];
+
+    if (!propertiesGrid || allPosts.length === 0) return;
+
+    allPosts.forEach(post => {
+        const postCard = document.createElement("div");
+
+        postCard.className = "property-card";
+        postCard.dataset.type = post.type;
+        postCard.dataset.city = post.city;
+        postCard.dataset.rooms = post.rooms;
+        postCard.dataset.area = post.area;
+        postCard.dataset.priceUsd = post.price.replace("$", "").replace(/,/g, "");
+        postCard.dataset.deal = post.deal;
+        postCard.dataset.phone = post.phone;
+        postCard.dataset.name = post.sellerName;
+        postCard.dataset.role = post.sellerRole;
+        postCard.dataset.avatar = post.sellerAvatar;
+
+        postCard.innerHTML = `
+            <img src="${post.image}" alt="${post.title}">
+
+            <div class="property-info">
+                <span class="property-type">${post.type}</span>
+                <h3>${post.title}</h3>
+                <p class="property-location">${post.location}</p>
+                <p class="property-details">${post.details}</p>
+
+                <div class="property-bottom">
+                    <span class="price">${post.price}</span>
+
+                    <div class="card-buttons">
+                        <img src="heart-b.png" class="card-heart">
+                        <a href="#" class="details-btn">Детальніше</a>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        propertiesGrid.prepend(postCard);
+        
+    });
+}
+
+// renderUserPostsOnHome();
+async function loadPropertiesFromDatabase() {
+    try {
+        const response = await fetch("http://localhost:5000/api/properties");
+        const properties = await response.json();
+
+        const propertiesGrid = document.querySelector(".properties-grid");
+
+        if (!propertiesGrid) return;
+
+        properties.forEach(property => {
+            const postCard = document.createElement("div");
+
+            let photos = [];
+
+            try {
+                photos = JSON.parse(property.photos);
+            } catch (e) {
+                photos = [property.image];
+            }
+
+            postCard.className = "property-card";
+            postCard.dataset.type = property.type;
+            postCard.dataset.city = property.city;
+            postCard.dataset.rooms = property.rooms;
+            postCard.dataset.area = property.area;
+            postCard.dataset.priceUsd = property.price;
+            postCard.dataset.deal = property.deal;
+            postCard.dataset.phone = property.phone || "";
+            postCard.dataset.name = property.seller_name || "Власник";
+            postCard.dataset.role = "Власник";
+            postCard.dataset.avatar = property.seller_avatar || "avatar.png";
+
+            postCard.innerHTML = `
+                <img src="${property.image}" alt="${property.title}">
+
+                <div class="property-info">
+                    <span class="property-type">${property.type}</span>
+                    <h3>${property.title}</h3>
+                    <p class="property-location">${property.district ? property.city + ", " + property.district : property.city}</p>
+                    <p class="property-details">${property.rooms} кімнати • ${property.area} м²</p>
+
+                    <div class="property-bottom">
+                        <span class="price">$${Number(property.price).toLocaleString("en-US")}</span>
+
+                        <div class="card-buttons">
+                            <img src="heart-b.png" class="card-heart">
+                            <a href="#" class="details-btn">Детальніше</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            propertiesGrid.prepend(postCard);
+
+            propertyExtraData[property.title] = {
+                floor: property.floor || "не вказано",
+                state: property.state || "не вказано",
+                description: property.description || "Додаткова інформація відсутня.",
+                photos: photos
+            };
+        });
+
+        propertyCards = document.querySelectorAll(".property-card");
+        updatePrices();
+        filterProperties();
+        attachPropertyEvents();
+    } catch (error) {
+        console.log("Помилка завантаження оголошень з БД:", error);
+    }
+}
+
+function attachPropertyEvents() {
+    document.querySelectorAll(".details-btn").forEach(button => {
+        button.onclick = function(event) {
+            event.preventDefault();
+
+            const card = this.closest(".property-card");
+            if (!card) return;
+
+            const title = card.querySelector("h3").textContent.trim();
+            const extra = propertyExtraData[title];
+            
+            const phone = card.dataset.phone;
+            const name = card.dataset.name;
+            const role = card.dataset.role;
+            const avatar = card.dataset.avatar;
+
+            const contactBtn = document.querySelector(".contact-btn");
+            const sellerName = document.getElementById("sellerName");
+            const sellerRole = document.getElementById("sellerRole");
+            const sellerAvatar = document.getElementById("sellerAvatar");
+
+            if (sellerName) sellerName.textContent = name || "Власник";
+            if (sellerRole) sellerRole.textContent = role || "Користувач";
+            if (sellerAvatar) sellerAvatar.src = avatar || "avatar.png";
+
+            if (contactBtn) {
+                contactBtn.dataset.phone = phone || "";
+                contactBtn.textContent = "Зв’язатися з продавцем";
+                contactBtn.classList.remove("phone-visible");
+                contactBtn.style.pointerEvents = "auto";
+            }
+            modalTitle.textContent = title;
+            modalLocation.textContent = card.querySelector(".property-location").textContent;
+            modalDetails.textContent = card.querySelector(".property-details").textContent;
+            modalPrice.textContent = card.querySelector(".price").textContent;
+
+            modalDeal.textContent = card.dataset.deal || "Купівля";
+            modalFloor.textContent = extra ? extra.floor : "не вказано";
+            modalState.textContent = extra ? extra.state : "не вказано";
+            modalDescription.textContent = extra ? extra.description : "Додаткова інформація відсутня.";
+
+            const photos = extra && extra.photos ? extra.photos : [card.querySelector("img").src];
+
+            modalImage.src = photos[0];
+
+            modalThumbs.forEach((thumb, index) => {
+                if (photos[index]) {
+                    thumb.style.display = "block";
+                    thumb.src = photos[index];
+
+                    thumb.onclick = function() {
+                        modalImage.src = this.src;
+                    };
+                } else {
+                    thumb.style.display = "none";
+                }
+            });
+
+            modal.style.display = "flex";
+
+            setTimeout(() => {
+                modal.classList.add("show");
+            }, 10);
+        };
+    });
+}
+
+propertyCards = document.querySelectorAll(".property-card");
 const togglePropertiesBtn = document.getElementById("togglePropertiesBtn");
 let showAllProperties = false;
 const initialVisibleCount = 9;
@@ -544,6 +875,16 @@ const propertyExtraData = {
         ]
     }
 };
+const allUserPostsForExtraData = JSON.parse(localStorage.getItem("allUserPosts")) || [];
+
+allUserPostsForExtraData.forEach(post => {
+    propertyExtraData[post.title] = {
+        floor: post.floor || "не вказано",
+        state: post.state || "не вказано",
+        description: post.description || "Додаткова інформація відсутня.",
+        photos: post.photos || [post.image]
+    };
+});
 function getCardFullData(card) {
     const title = card.querySelector("h3").textContent.trim();
     const extra = propertyExtraData[title];
@@ -579,6 +920,23 @@ function savePropertiesCatalog() {
 }
 
 savePropertiesCatalog();
+
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+let favorites = [];
+let viewed = [];
+
+let favoritesKey = null;
+let viewedKey = null;
+
+if (currentUser) {
+    favoritesKey = `favorites_${currentUser.email}`;
+    viewedKey = `viewed_${currentUser.email}`;
+
+    favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+    viewed = JSON.parse(localStorage.getItem(viewedKey)) || [];
+}
+
 document.querySelectorAll(".details-btn").forEach(button => {
     button.addEventListener("click", function(event) {
         event.preventDefault();
@@ -711,21 +1069,8 @@ modal.addEventListener("click", function(event) {
 const cardHearts = document.querySelectorAll(".card-heart");
 const favoritesCount = document.getElementById("favoritesCount");
 
-const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-let favorites = [];
-let viewed = [];
 
-let favoritesKey = null;
-let viewedKey = null;
-
-if (currentUser) {
-    favoritesKey = `favorites_${currentUser.email}`;
-    viewedKey = `viewed_${currentUser.email}`;
-
-    favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
-    viewed = JSON.parse(localStorage.getItem(viewedKey)) || [];
-}
 function updateFavoritesCount(){
     if (favoritesCount) {
         favoritesCount.textContent = favorites.length;
@@ -776,6 +1121,10 @@ document.addEventListener("click", function(e) {
         const rawPhone = e.target.dataset.phone;
 
         function formatPhone(phone) {
+            if (!phone) {
+                return "Номер не вказано";
+            }
+
             return phone.replace(
                 /(\+380)(\d{2})(\d{3})(\d{2})(\d{2})/,
                 "$1 $2 $3 $4 $5"
@@ -802,10 +1151,22 @@ const isLoggedIn = localStorage.getItem("isLoggedIn");
 
 
 if (isLoggedIn === "true" && currentUser) {
-    if (headerAvatar) headerAvatar.src = currentUser.avatar || "avatar.png";
     if (headerUserName) headerUserName.textContent = currentUser.name;
     if (logoutBtn) logoutBtn.style.display = "inline-block";
     if (profileBtn) profileBtn.href = "profile.html";
+
+    if (headerAvatar) {
+        headerAvatar.src = "avatar.png";
+
+        fetch(`http://localhost:5000/api/users/${currentUser.id}/avatar`)
+            .then(response => response.json())
+            .then(data => {
+                headerAvatar.src = data.avatar || "avatar.png";
+            })
+            .catch(error => {
+                headerAvatar.src = "avatar.png";
+            });
+    }
 }
 
 if (logoutBtn) {
@@ -876,3 +1237,4 @@ if (headerAddPostBtn) {
         }
     });
 }
+loadPropertiesFromDatabase();

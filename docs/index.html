@@ -17,13 +17,60 @@
         <a href="auth.html" class="login-modal-btn">Увійти або зареєструватися</a>
     </div>
 </div>
+
+<div class="login-modal" id="reviewLoginModal">
+    <div class="login-modal-content">
+        <span class="login-modal-close" id="reviewLoginClose">&times;</span>
+        <h2>Потрібно увійти</h2>
+        <p>Щоб залишити відгук про платформу, увійдіть або зареєструйтесь.</p>
+        <a href="auth.html" class="login-modal-btn">Увійти або зареєструватися</a>
+    </div>
+</div>
+<div class="review-modal" id="reviewModal">
+
+    <div class="review-modal-content">
+
+        <span class="review-modal-close" id="reviewModalClose">
+            &times;
+        </span>
+
+        <h2>Залишити відгук</h2>
+
+        <textarea
+            id="reviewText"
+            placeholder="Ваш відгук..."
+        ></textarea>
+
+        <select id="reviewRole">
+            <option value="Покупець">Покупець</option>
+            <option value="Орендар">Орендар</option>
+            <option value="Власник">Власник</option>
+        </select>
+
+        <select id="reviewStars">
+            <option value="★★★★★">5 зірок</option>
+            <option value="★★★★">4 зірки</option>
+            <option value="★★★">3 зірки</option>
+            <option value="★★">2 зірки</option>
+            <option value="★">1 зірки</option>
+        </select>
+
+        <button id="saveReviewBtn" type="button">
+            Опублікувати
+        </button>
+
+    </div>
+
+</div>
 <div class="hero">
 
 <div class="overlay">
 
 <header>
 
-<img src="key.png" class="logo">
+<a href="index.html">
+    <img src="key.png" class="logo">
+</a>
 
 <nav class="menu">
 
@@ -565,7 +612,7 @@
 </section>
 <section class="reviews">
     <div class="reviews-top">
-        <h2>Відгуки наших клієнтів</h2>
+        <h2>Відгуки наших користувачів</h2>
         <a href="#" class="review-btn">Залишити відгук</a>
     </div>
 

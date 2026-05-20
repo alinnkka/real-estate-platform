@@ -53,8 +53,9 @@ const propertiesCatalog = JSON.parse(localStorage.getItem("propertiesCatalog")) 
 
 let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
 let viewed = JSON.parse(localStorage.getItem(viewedKey)) || [];
-let myPosts = JSON.parse(localStorage.getItem(myPostsKey)) || [];
+let myPosts = [];
 let editingPostTitle = null;
+let editingPostId = null;
 function normalizeItem(item) {
     const full = propertiesCatalog[item.title] || {};
 
@@ -78,7 +79,7 @@ myPosts = myPosts.filter(item => typeof item === "object" && item.title);
 
 localStorage.setItem(favoritesKey, JSON.stringify(favorites));
 localStorage.setItem(viewedKey, JSON.stringify(viewed));
-localStorage.setItem(myPostsKey, JSON.stringify(myPosts));
+//localStorage.setItem(myPostsKey, JSON.stringify(myPosts));
 
 function updateFavoritesCount() {
     if (favoritesCount) {
@@ -206,8 +207,9 @@ function createCardHTML(item, heartClass, detailsClass, heartImage, withDelete =
     return `
         <div class="property-card profile-property-card">
             ${withDelete ? `
-    <button class="delete-post-btn"
-            data-title="${item.title}">
+<button class="delete-post-btn"
+        data-title="${item.title}"
+        data-id="${item.dbId || ""}">
         ×
     </button>
 
@@ -425,20 +427,21 @@ function savePost(photos) {
     }
 
     const post = {
-        title: title,
-        city: city,
-        district: district,
-        type: type,
-        deal: deal,
-        rooms: rooms,
-        area: area,
+        dbId: editingPostId,
+        title,
+        city,
+        district,
+        type,
+        deal,
+        rooms,
+        area,
         price: "$" + Number(priceValue).toLocaleString("en-US"),
         floor: floor || "не вказано",
         state: state || "не вказано",
-        phone: phone,
-        description: description,
+        phone,
+        description,
         image: photos[0],
-        photos: photos,
+        photos,
         location: district ? `${city}, ${district}` : city,
         details: `${rooms} кімнати • ${area} м²`,
         sellerName: currentUser.name,
@@ -446,27 +449,59 @@ function savePost(photos) {
         sellerAvatar: currentUser.avatar || "avatar.png"
     };
 
-    if (editingPostTitle) {
-        myPosts = myPosts.map(item => {
-            if (item.title === editingPostTitle) {
-                return post;
-            }
+    const method = post.dbId ? "PUT" : "POST";
+    const url = post.dbId
+        ? `http://localhost:5000/api/properties/${post.dbId}`
+        : "http://localhost:5000/api/properties";
 
-            return item;
-        });
+    fetch(url, {
+        method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            user_id: currentUser.id,
+            title: post.title,
+            city: post.city,
+            district: post.district,
+            type: post.type,
+            deal: post.deal,
+            rooms: post.rooms,
+            area: post.area,
+            price: Number(priceValue),
+            floor: post.floor,
+            state: post.state,
+            phone: post.phone,
+            description: post.description,
+            image: post.image,
+            photos: post.photos
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.property && data.property.id) {
+            post.dbId = data.property.id;
+
+            if (editingPostId) {
+                myPosts = myPosts.map(item => item.dbId === editingPostId ? post : item);
+            } else {
+                myPosts.unshift(post);
+            }
+        }
 
         editingPostTitle = null;
-    } else {
-        myPosts.unshift(post);
-    }
+        editingPostId = null;
 
-    localStorage.setItem(myPostsKey, JSON.stringify(myPosts));
+        myPostForm.reset();
+        myPostForm.style.display = "none";
 
-    myPostForm.reset();
-    myPostForm.style.display = "none";
-
-    loadMyPosts();
+        loadMyPosts();
+    })
+    .catch(error => {
+        console.log("Помилка збереження оголошення:", error);
+    });
 }
+
 function loadMyPosts() {
     if (!myPostsList) return;
 
@@ -501,33 +536,43 @@ function loadMyPosts() {
 
     document.querySelectorAll(".delete-post-btn").forEach(button => {
         button.addEventListener("click", () => {
+            const dbId = button.dataset.id;
             const title = button.dataset.title;
 
-            myPosts = myPosts.filter(post => post.title !== title);
-            favorites = favorites.filter(item => item.title !== title);
-            viewed = viewed.filter(item => item.title !== title);
+            if (!dbId) return;
 
-            localStorage.setItem(myPostsKey, JSON.stringify(myPosts));
-            localStorage.setItem(favoritesKey, JSON.stringify(favorites));
-            localStorage.setItem(viewedKey, JSON.stringify(viewed));
+            fetch(`http://localhost:5000/api/properties/${dbId}`, {
+                method: "DELETE"
+            })
+            .then(response => response.json())
+            .then(() => {
+                myPosts = myPosts.filter(post => post.dbId != dbId);
+                favorites = favorites.filter(item => item.title !== title);
+                viewed = viewed.filter(item => item.title !== title);
 
-            updateFavoritesCount();
-            loadFavorites();
-            loadViewed();
-            loadMyPosts();
+                localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+                localStorage.setItem(viewedKey, JSON.stringify(viewed));
+
+                updateFavoritesCount();
+                loadFavorites();
+                loadViewed();
+                loadMyPosts();
+            })
+            .catch(error => {
+                console.log("Помилка видалення з PostgreSQL:", error);
+            });
         });
     });
+
     document.querySelectorAll(".edit-post-btn").forEach(button => {
-
         button.addEventListener("click", () => {
-
             const title = button.dataset.title;
-
             const post = myPosts.find(item => item.title === title);
 
             if (!post) return;
 
             editingPostTitle = title;
+            editingPostId = post.dbId;
 
             myPostForm.style.display = "grid";
 
@@ -538,23 +583,19 @@ function loadMyPosts() {
             document.getElementById("myPostDeal").value = post.deal || "";
             document.getElementById("myPostRooms").value = post.rooms || "";
             document.getElementById("myPostArea").value = post.area || "";
-
-            document.getElementById("myPostPrice").value =
-                post.price.replace("$", "").replace(/,/g, "");
-
+            document.getElementById("myPostPrice").value = String(post.price || "").replace("$", "").replace(/,/g, "");
             document.getElementById("myPostFloor").value = post.floor || "";
             document.getElementById("myPostState").value = post.state || "";
             document.getElementById("myPostPhone").value = post.phone || "";
             document.getElementById("myPostDescription").value = post.description || "";
 
             window.scrollTo({
-                top:0,
-                behavior:"smooth"
+                top: 0,
+                behavior: "smooth"
             });
-
         });
-
     });
+
     document.querySelectorAll(".my-post-heart").forEach(heart => {
         heart.addEventListener("click", () => {
             const title = heart.dataset.title;
@@ -578,10 +619,55 @@ function loadMyPosts() {
     });
 }
 
+async function loadMyPostsFromDatabase() {
+    try {
+        const response = await fetch(`http://localhost:5000/api/users/${currentUser.id}/properties`);
+        const posts = await response.json();
+
+        myPosts = posts.map(property => {
+            let photos = [];
+
+            try {
+                photos = JSON.parse(property.photos);
+            } catch (e) {
+                photos = [property.image];
+            }
+
+            return {
+                dbId: property.id,
+                title: property.title,
+                city: property.city,
+                district: property.district,
+                type: property.type,
+                deal: property.deal,
+                rooms: property.rooms,
+                area: property.area,
+                price: "$" + Number(property.price).toLocaleString("en-US"),
+                floor: property.floor || "не вказано",
+                state: property.state || "не вказано",
+                phone: property.phone,
+                description: property.description,
+                image: property.image,
+                photos,
+                location: property.district ? `${property.city}, ${property.district}` : property.city,
+                details: `${property.rooms} кімнати • ${property.area} м²`,
+                sellerName: currentUser.name,
+                sellerRole: "Власник",
+                sellerAvatar: currentUser.avatar || "avatar.png"
+            };
+        });
+
+        loadMyPosts();
+
+    } catch (error) {
+        console.log("Помилка завантаження оголошень користувача:", error);
+    }
+}
+
 updateFavoritesCount();
 loadFavorites();
 loadViewed();
-loadMyPosts();
+loadMyPostsFromDatabase();
 
 if (window.location.hash === "#favorites") {
     showTab("favorites");

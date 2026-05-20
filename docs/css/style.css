@@ -1117,6 +1117,22 @@ transform:scale(1.05);
     position:sticky;
     top:110px;
 }
+.profile-logout-btn{
+    margin-top:20px;
+    width:100%;
+    border:none;
+    background:#0a1f44;
+    color:white;
+    padding:14px;
+    border-radius:14px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.profile-logout-btn:hover{
+    background:#16356d;
+}
 
 .profile-sidebar .profile-avatar{
     width:110px;
@@ -1624,4 +1640,70 @@ transform:scale(1.05);
 .edit-post-btn:hover{
     background:#0a1f44;
     color:white;
+}
+
+
+
+.review-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:3000;
+}
+
+.review-modal-content{
+    width:450px;
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.review-modal-content h2{
+    margin:0;
+    color:#0a1f44;
+}
+
+.review-modal-close{
+    position:absolute;
+    top:18px;
+    right:22px;
+    font-size:32px;
+    cursor:pointer;
+    color:#0a1f44;
+}
+
+.review-modal-content textarea{
+    height:120px;
+    resize:none;
+    border:none;
+    background:#f4f6f8;
+    border-radius:14px;
+    padding:15px;
+    font-size:16px;
+}
+
+.review-modal-content select{
+    border:none;
+    background:#f4f6f8;
+    border-radius:14px;
+    padding:14px;
+    font-size:16px;
+}
+
+#saveReviewBtn{
+    border:none;
+    background:#0a1f44;
+    color:white;
+    padding:15px;
+    border-radius:14px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
 }
